@@ -20,7 +20,7 @@ public func configure(_ app: Application) throws {
      app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
 
     if var config = PostgresConfiguration(url: Environment.databaseURL), app.environment.isRelease {
-        config.tlsConfiguration = TLSConfiguration.makeClientConfiguration()
+        config.tlsConfiguration = TLSConfiguration.forClient(certificateVerification: .none)
         app.databases.use(.postgres(configuration: config), as: .psql)
     } else {
         try app.databases.use(.postgres(url: Environment.databaseURL), as: .psql)
